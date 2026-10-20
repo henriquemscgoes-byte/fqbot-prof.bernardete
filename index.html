@@ -65,8 +65,8 @@
         <div class="messages" id="messages"></div>
       </div>
       <div class="composer-wrap">
-        <form class="composer" id="chatForm"><textarea id="chatInput" rows="1" aria-label="Escreve a tua pergunta" placeholder="Escreve uma pergunta sobre a matéria…" required></textarea><button class="send" type="submit">Enviar</button></form>
-        <div class="composer-hint">O FQBot responde apenas com base nos PDFs fornecidos pela professora.</div>
+        <form class="composer" id="chatForm"><textarea id="chatInput" rows="1" aria-label="Escreve a tua pergunta" placeholder="Pergunta ou diz olá…" required></textarea><button class="send" type="submit">Enviar</button></form>
+        <div class="composer-hint">Podes conversar e pedir curiosidades simples. As respostas de CFQ usam apenas os PDFs fornecidos pela professora.</div>
       </div>
     </main>
   </section>
@@ -130,6 +130,15 @@
       function answer(raw) {
         const q = raw.toLocaleLowerCase('pt-PT').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (/\b(nome completo|morada|telefone|telemovel|email|palavra-passe|password)\b/.test(q)) return 'Por segurança, não partilhes palavras-passe nem dados pessoais na conversa. Eu não preciso desses dados para te ajudar a estudar.';
+        const lembreteEstudo = '\n\nLembra-te: sou sobretudo o FQBot de Ciências Físico-Químicas. Para a matéria, respondo apenas com base nos PDFs da professora.';
+        if (/\b(piadas?|faz-me rir|conta.*(piada|anedota))\b/.test(q)) return 'Porque é que o livro de Matemática estava triste? Porque tinha muitos problemas!' + lembreteEstudo;
+        if (/\b(adivinha|adivinhas|enigmas?|charada)\b/.test(q)) { lastSimpleReply = 'adivinha-pendente'; return 'Adivinha: quanto mais se tira, maior fica. O que é?\n\nPensa um bocadinho e, quando quiseres, pede a resposta.' + lembreteEstudo; }
+        if (/\b(resposta.*adivinha|solucao.*adivinha|qual.*resposta|desisto)\b/.test(q) && lastSimpleReply === 'adivinha-pendente') { lastSimpleReply = ''; return 'A resposta é: um buraco!' + lembreteEstudo; }
+        if (/\b(curiosidade|curiosidades|facto curioso|diz.*(facto|curiosidade))\b/.test(q)) return 'Curiosidade: os polvos têm três corações.\n\nEsta é uma curiosidade geral; não faz parte dos conteúdos dos PDFs de CFQ.' + lembreteEstudo;
+        if (/\b(o que sabes fazer|como podes ajudar|que podes fazer|o que posso perguntar|ajuda-me|estou aborrecid|sugestoes|sugestões)\b/.test(q)) return 'Posso conversar um pouco, contar uma piada, propor uma adivinha ou uma curiosidade simples. Também posso explicar a matéria dos PDFs, dar pistas e criar exercícios de revisão.' + lembreteEstudo;
+        if (/\b(como estas|como estás|tudo bem|que tal|estou bem|estou triste|estou feliz)\b/.test(q)) return 'Obrigado por perguntares! Estou pronto para conversar e ajudar. Como assistente virtual, não tenho sentimentos como uma pessoa, mas posso tentar tornar o estudo mais divertido.' + lembreteEstudo;
+        if (/\b(adeus|ate logo|até logo|xau|tchau|vou-me embora)\b/.test(q)) return 'Até logo! Quando quiseres, volta para conversar ou estudar CFQ comigo.' + lembreteEstudo;
+        if (/\b(obrigado|obrigada|agradeco|agradeço)\b/.test(q)) return 'De nada! Ainda bem que pude ajudar.' + lembreteEstudo;
         if (/\b(nao percebi|nao entendi|explica.*(simples|melhor)|mais simples|de outra forma)\b/.test(q)) return lastSimpleReply || 'Claro! Diz-me que parte te confundiu e explico-a com palavras mais simples. Também podes pedir uma pista.';
         if (pendingQuiz) {
           pendingQuiz = false;
@@ -175,3 +184,5 @@
   </script>
 </body>
 </html>
+
+
