@@ -15,7 +15,7 @@
   const teacherButton = document.getElementById('teacherLoginButton');
   const label = document.querySelector('label[for="username"]');
   const usernamePattern = /^[a-z0-9._-]{3,32}$/;
-  let teacherMode = false;
+  let staffMode = false;
   let signedInUser = null;
   let selectedStudent = null;
 
@@ -33,14 +33,14 @@
   }
 
   teacherButton.addEventListener('click', () => {
-    teacherMode = !teacherMode;
-    label.textContent = teacherMode ? 'Email da professora' : 'Nome de utilizador';
-    usernameInput.type = teacherMode ? 'email' : 'text';
-    usernameInput.autocomplete = teacherMode ? 'email' : 'username';
-    usernameInput.placeholder = teacherMode ? 'Email usado na conta Supabase' : 'Nome de utilizador atribuído pela professora';
-    teacherButton.textContent = teacherMode ? 'Entrar como aluno' : 'Área da professora';
+    staffMode = !staffMode;
+    label.textContent = staffMode ? 'Email de acesso' : 'Nome de utilizador';
+    usernameInput.type = staffMode ? 'email' : 'text';
+    usernameInput.autocomplete = staffMode ? 'email' : 'username';
+    usernameInput.placeholder = staffMode ? 'Email da professora ou administrador' : 'Nome de utilizador atribuído pela professora';
+    teacherButton.textContent = staffMode ? 'Entrar como aluno' : 'Área da professora / administrador';
     notice.textContent = '';
-    if (!ready && teacherMode) {
+    if (!ready && staffMode) {
       setupNote.textContent = 'A ligação ao Supabase ainda não está configurada. O acesso da professora ficará disponível quando o projeto for ligado.';
       setupNote.style.display = 'block';
     } else {
@@ -50,7 +50,7 @@
 
   form.addEventListener('submit', event => {
     if (!ready) {
-      if (teacherMode) {
+      if (staffMode) {
         event.preventDefault();
         event.stopImmediatePropagation();
         setupNote.textContent = 'A ligação ao Supabase ainda não está configurada. O acesso da professora ficará disponível quando o projeto for ligado.';
@@ -72,12 +72,12 @@
     notice.textContent = '';
     const identity = usernameInput.value.trim();
     if (!identity || !passwordInput.value) return;
-    if (!teacherMode && !usernamePattern.test(identity.toLowerCase())) {
+    if (!staffMode && !usernamePattern.test(identity.toLowerCase())) {
       notice.textContent = 'Escreve o nome de utilizador atribuído pela professora.';
       usernameInput.focus();
       return;
     }
-    const email = teacherMode ? identity.toLowerCase() : identity.toLowerCase() + '@students.fqbot.invalid';
+    const email = staffMode ? identity.toLowerCase() : identity.toLowerCase() + '@students.fqbot.invalid';
     const { data, error } = await client.auth.signInWithPassword({ email, password: passwordInput.value });
     if (error || !data.user) {
       notice.textContent = 'Não consegui iniciar sessão. Confirma os dados ou pede ajuda à professora.';
@@ -94,7 +94,13 @@
     signedInUser = data.user;
     loginScreen.style.display = 'none';
     setupNote.style.display = 'none';
-    if (profile.role === 'teacher') {
+    if (profile.role === 'teacher' || profile.role === 'admin') {
+      const isAdmin = profile.role === 'admin';
+      document.querySelector('#adminScreen .admin-heading h1').textContent = isAdmin ? 'Administração do FQBot' : 'Área da professora';
+      document.querySelector('#adminScreen .admin-heading p').textContent = isAdmin
+        ? 'Gerir contas, consultar o estudo da turma e editar o site.'
+        : 'Gerir contas e acompanhar o estudo da turma.';
+      document.getElementById('siteEditorLink').hidden = !isAdmin;
       adminScreen.hidden = false;
       await loadStudents();
       return;
@@ -150,12 +156,13 @@
     appScreen.style.display = 'none';
     adminScreen.hidden = true;
     loginScreen.style.display = 'grid';
-    teacherMode = false;
+    staffMode = false;
     label.textContent = 'Nome de utilizador';
     usernameInput.type = 'text';
     usernameInput.autocomplete = 'username';
     usernameInput.placeholder = 'Nome de utilizador atribuído pela professora';
-    teacherButton.textContent = 'Área da professora';
+    teacherButton.textContent = 'Área da professora / administrador';
+    document.getElementById('siteEditorLink').hidden = true;
     document.getElementById('messages').replaceChildren();
     passwordInput.value = '';
     notice.textContent = '';
@@ -285,4 +292,5 @@
     } catch (error) { window.alert(error.message); }
   }
 })();
+
 
