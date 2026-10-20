@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f8fc">
-  <title>FQBot — Estudo de Ciências Físico-Químicas</title>
+  <title>FQBot — Estudo de Físico-Química</title>
   <style>
     :root{color-scheme:light;--ink:#17243d;--muted:#65758d;--blue:#2458c7;--line:#dce5f2;--pale:#f0f5ff;--green:#18865b;--red:#bd3c4d;--teal:#22a6a1}
     *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 12% 4%,#e3edff 0,transparent 42%),radial-gradient(ellipse at 90% 95%,#e3f7f4 0,transparent 34%),#f7f9fd}
@@ -22,7 +22,9 @@
     @media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{height:100dvh}.topbar{height:62px;padding:0 16px}.conversation{padding:18px 14px}.intro-panel{margin:7vh auto 24px}.composer-wrap{padding-left:12px;padding-right:12px}.message{max-width:94%}}
     @media(max-width:480px){.card{padding:26px 22px}.screen{padding:16px}.user-pill{padding:7px 10px}.send{min-width:60px;padding:0 10px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-  </style>
+    .login-actions{display:flex;justify-content:center;margin-top:14px}.text-button{border:0;background:transparent;color:#385a9a;font-size:13px;font-weight:650;padding:8px 10px;border-radius:9px}.text-button:hover{background:#f1f5ff}.credits{position:fixed;right:18px;bottom:12px;color:#7c8798;font-size:11px;letter-spacing:.02em}.setup-note{display:none;border-radius:12px;background:#fff8e8;color:#785b16;border:1px solid #f1dfb3;padding:12px 14px;font-size:13px;line-height:1.5;margin-top:12px}
+    .admin-screen{min-height:100vh;padding:28px 20px 48px;background:radial-gradient(ellipse at 10% 0,#e5efff,transparent 38%),#f6f8fc}.admin-shell{max-width:1050px;margin:0 auto}.admin-header{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px}.admin-heading{display:flex;align-items:center;gap:13px}.admin-heading h1{font-size:clamp(24px,4vw,34px);letter-spacing:-.04em;margin:0}.admin-heading p{color:var(--muted);margin:4px 0 0;font-size:14px}.admin-grid{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:18px}.admin-card{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 14px 40px #20365b0c}.admin-card h2{font-size:18px;margin:0 0 8px}.admin-card>p{color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 18px}.admin-card label{margin-top:13px}.admin-card input{height:44px}.admin-button{border:0;border-radius:10px;background:var(--blue);color:white;padding:10px 14px;font-weight:700}.admin-button.secondary{background:#eef3ff;color:#244579}.admin-button.danger{background:#fff1f1;color:#a33141}.admin-button:disabled{opacity:.55;cursor:wait;transform:none}.admin-status{min-height:20px;color:var(--muted);font-size:13px;margin-top:10px;line-height:1.45}.student-list{display:grid;gap:9px}.student-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:13px;padding:12px}.student-name{font-weight:700;font-size:14px}.student-login{color:var(--muted);font-size:12px;margin-top:3px}.student-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.student-actions .admin-button{font-size:12px;padding:8px 10px}.history-panel{display:none;margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.history-panel h3{font-size:15px;margin:0 0 10px}.history-list{max-height:400px;overflow:auto;display:grid;gap:8px}.history-entry{background:#f6f8fc;border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}.history-meta{font-size:10px;color:var(--muted);margin-bottom:4px}.reset-dialog{width:min(92vw,420px);border:0;border-radius:20px;padding:25px;box-shadow:0 25px 80px #1c315844}.reset-dialog::backdrop{background:#14243c77;backdrop-filter:blur(3px)}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    @media(max-width:760px){.admin-grid{grid-template-columns:1fr}.admin-screen{padding:18px 12px 40px}.admin-card{padding:18px}.student-row{align-items:flex-start;flex-direction:column}.student-actions{justify-content:flex-start}.credits{right:12px;bottom:8px}}  </style>
 </head>
 <body>
   <section class="screen" id="loginScreen" aria-label="Iniciar sessão">
@@ -30,17 +32,58 @@
       <div class="brand"><div class="mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="24" rx="19" ry="8" stroke="white" stroke-width="2.2" transform="rotate(-35 24 24)"/><ellipse cx="24" cy="24" rx="19" ry="8" stroke="white" stroke-width="2.2" transform="rotate(35 24 24)"/><circle cx="24" cy="24" r="3.3" fill="#fff"/><circle cx="8.7" cy="13.2" r="2.5" fill="#82eee0"/><circle cx="37.5" cy="34.7" r="2.5" fill="#ffd66b"/></svg></div><div class="brand-name">FQBot</div></div>
       <section class="card" aria-labelledby="loginTitle">
         <h1 id="loginTitle">Bem-vindo ao FQBot</h1>
-        <p class="intro">O teu assistente de estudo de Ciências Físico-Químicas, da professora Bernardete.</p>
+        <p class="intro">O teu assistente de estudo de Físico-Química, da professora Bernardete.</p>
         <form id="loginForm">
-          <label for="username">Nome de utilizador</label><input id="username" name="username" type="text" autocomplete="username" placeholder="Escreve o nome de teste" required>
-          <label for="password">Palavra-passe</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Escreve a palavra-passe de teste" required>
+          <label for="username">Nome de utilizador</label><input id="username" name="username" type="text" autocomplete="username" placeholder="Nome de utilizador atribuído pela professora" required>
+          <label for="password">Palavra-passe</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="A tua palavra-passe" required>
           <button class="primary" type="submit">Entrar</button><div class="notice" id="loginNotice" role="alert" aria-live="polite"></div>
         </form>
-        <div class="note"><strong>Acesso de demonstração:</strong> nome <code>aluno8</code> · palavra-passe <code>FQbot2026!</code>. Não uses estes dados para contas reais.</div>
+        <div class="note" id="loginHelp"><strong>Contas da turma:</strong> os alunos entram com o nome de utilizador atribuído pela professora.</div>
+        <div class="setup-note" id="setupNote" role="status" aria-live="polite"></div>
+        <div class="login-actions"><button class="text-button" id="teacherLoginButton" type="button">Área da professora</button></div>
       </section>
-      <p class="foot">Ciências Físico-Químicas · 8.º ano · Professora Bernardete</p>
+      <p class="foot">Físico-Química · 8.º ano · Professora Bernardete</p>
+    </main>
+    <div class="credits">Henrique Goes</div>
+  </section>
+
+  <section class="admin-screen" id="adminScreen" hidden aria-label="Área da professora">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div class="admin-heading"><div class="mark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="24" rx="19" ry="8" stroke="white" stroke-width="2.2" transform="rotate(-35 24 24)"/><ellipse cx="24" cy="24" rx="19" ry="8" stroke="white" stroke-width="2.2" transform="rotate(35 24 24)"/><circle cx="24" cy="24" r="3.3" fill="#fff"/><circle cx="8.7" cy="13.2" r="2.5" fill="#82eee0"/><circle cx="37.5" cy="34.7" r="2.5" fill="#ffd66b"/></svg></div><div><h1>Área da professora</h1><p>Gerir contas e acompanhar o estudo da turma.</p></div></div>
+        <button class="logout" id="teacherLogoutButton" type="button">Terminar sessão</button>
+      </header>
+      <div class="admin-grid">
+        <section class="admin-card">
+          <h2>Criar conta de aluno</h2>
+          <p>Usa um nome de utilizador ou alcunha. Não é necessário recolher o nome completo nem um email do aluno.</p>
+          <form id="createStudentForm">
+            <label for="newStudentName">Nome a mostrar</label><input id="newStudentName" maxlength="60" required autocomplete="off" placeholder="Ex.: Inês">
+            <label for="newStudentUsername">Nome de utilizador</label><input id="newStudentUsername" maxlength="32" minlength="3" pattern="[a-zA-Z0-9._-]{3,32}" required autocomplete="off" placeholder="Ex.: ines8">
+            <label for="newStudentPassword">Palavra-passe inicial</label><input id="newStudentPassword" type="password" minlength="10" maxlength="72" required autocomplete="new-password" placeholder="Pelo menos 10 caracteres">
+            <button class="admin-button" type="submit" style="margin-top:17px;width:100%">Criar conta</button>
+            <div class="admin-status" id="createStudentStatus" aria-live="polite"></div>
+          </form>
+        </section>
+        <section class="admin-card">
+          <h2>Contas dos alunos</h2>
+          <p>Consulta o histórico, altera a palavra-passe ou elimina uma conta. Eliminar uma conta apaga também o histórico associado.</p>
+          <div class="student-list" id="studentList"><div class="admin-status">A carregar contas…</div></div>
+          <div class="history-panel" id="historyPanel"><h3 id="historyTitle">Histórico</h3><div class="history-list" id="historyList"></div></div>
+        </section>
+      </div>
     </main>
   </section>
+
+  <dialog class="reset-dialog" id="resetPasswordDialog">
+    <form id="resetPasswordForm">
+      <h2>Alterar palavra-passe</h2>
+      <p id="resetPasswordCaption" style="color:var(--muted);font-size:14px;line-height:1.5"></p>
+      <label for="resetPasswordInput">Nova palavra-passe</label><input id="resetPasswordInput" type="password" minlength="10" maxlength="72" required autocomplete="new-password">
+      <div class="dialog-actions"><button class="admin-button secondary" type="button" id="cancelResetButton">Cancelar</button><button class="admin-button" type="submit">Guardar</button></div>
+      <div class="admin-status" id="resetPasswordStatus" aria-live="polite"></div>
+    </form>
+  </dialog>
 
   <section class="app" id="appScreen" aria-label="Chat FQBot">
     <aside class="sidebar">
@@ -72,8 +115,6 @@
   </section>
   <script>
     (() => {
-      const DEMO_USER = 'aluno8';
-      const DEMO_PASS = 'FQbot2026!';
       const loginScreen = document.getElementById('loginScreen');
       const appScreen = document.getElementById('appScreen');
       const loginForm = document.getElementById('loginForm');
@@ -89,17 +130,7 @@
 
       loginForm.addEventListener('submit', event => {
         event.preventDefault();
-        if (nameInput.value.trim().toLowerCase() !== DEMO_USER || passwordInput.value !== DEMO_PASS) {
-          notice.textContent = 'Os dados não correspondem ao acesso de demonstração. Confirma e tenta novamente.';
-          passwordInput.focus();
-          return;
-        }
-        notice.textContent = '';
-        document.getElementById('displayName').textContent = nameInput.value.trim();
-        loginScreen.style.display = 'none';
-        appScreen.style.display = 'grid';
-        chatInput.focus();
-        addMessage('bot', 'Olá! Sou o FQBot da professora Bernardete. Posso ajudar-te a estudar a matéria dos PDFs. Podes pedir uma explicação, uma pista ou um exercício.');
+        notice.textContent = 'O acesso por contas ainda precisa de ser ligado ao Supabase pela professora.';
       });
 
       document.getElementById('logoutButton').addEventListener('click', () => {
@@ -115,10 +146,10 @@
       });
       chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px'; });
 
-      function addMessage(role, text) {
+      function addMessage(role, text, persist = true) {
         document.getElementById('introPanel').style.display = 'none';
         const bubble = document.createElement('div'); bubble.className = 'message ' + role; bubble.textContent = text;
-        messages.appendChild(bubble); document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight;
+        messages.appendChild(bubble); document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight; if (persist) document.dispatchEvent(new CustomEvent('fqbot:message', { detail: { role, text } }));
       }
       function sendText(text) {
         const value = (text || '').trim(); if (!value) return;
@@ -130,7 +161,7 @@
       function answer(raw) {
         const q = raw.toLocaleLowerCase('pt-PT').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if (/\b(nome completo|morada|telefone|telemovel|email|palavra-passe|password)\b/.test(q)) return 'Por segurança, não partilhes palavras-passe nem dados pessoais na conversa. Eu não preciso desses dados para te ajudar a estudar.';
-        const lembreteEstudo = '\n\nLembra-te: sou sobretudo o FQBot de Ciências Físico-Químicas. Para a matéria, respondo apenas com base nos PDFs da professora.';
+        const lembreteEstudo = '\n\nLembra-te: sou sobretudo o FQBot de Físico-Química. Para a matéria, respondo apenas com base nos PDFs da professora.';
         const conta = q.match(/quanto e (\d+) (mais|menos|vezes|dividido por) (\d+)/);
         if (conta) {
           const a = Number(conta[1]), op = conta[2], b = Number(conta[3]);
@@ -161,7 +192,7 @@
           waitingForHint = false;
           return 'Pista: pensa no que acontece à agitação dos corpúsculos quando a temperatura aumenta e em quantas vezes, e com que intensidade, colidem com as paredes do recipiente. A resposta completa é: a volume constante, a pressão aumenta quando a temperatura aumenta.';
         }
-        if (/^(ola|ola!|bom dia|boa tarde|boa noite|obrigado|obrigada|quem es|quem es\?)\b/.test(q) || /\b(quem es|como te chamas)\b/.test(q)) return 'Olá! Sou o FQBot da professora Bernardete. Estou aqui sobretudo para te ajudar a estudar Ciências Físico-Químicas com a matéria dos PDFs.';
+        if (/^(ola|ola!|bom dia|boa tarde|boa noite|obrigado|obrigada|quem es|quem es\?)\b/.test(q) || /\b(quem es|como te chamas)\b/.test(q)) return 'Olá! Sou o FQBot da professora Bernardete. Estou aqui sobretudo para te ajudar a estudar Físico-Química com a matéria dos PDFs.';
         if (/\b(escolha multipla)\b/.test(q)) {
           pendingQuiz = true;
           return 'Escolhe uma opção: a temperatura constante, se o volume de um gás diminuir, a pressão…\nA) diminui\nB) aumenta\nC) não se altera\nResponde A, B ou C.';
@@ -188,14 +219,22 @@
         if (/\b(pressao.*volume|volume.*pressao|comprimir|temperatura constante)\b/.test(q)) { lastSimpleReply = 'Sem mudar a temperatura: menos espaço para o gás dá mais pressão; mais espaço dá menos pressão.'; return 'Se a temperatura não mudar: quando o volume do gás diminui, a pressão aumenta. Quando o volume aumenta, a pressão diminui.\n\nEm poucas palavras: menos espaço para o gás significa maior pressão.'; }
         if (/\b(temperatura.*volume|volume.*temperatura|pressao constante)\b/.test(q)) { lastSimpleReply = 'Sem mudar a pressão: se o gás aquece, ocupa mais espaço; se arrefece, ocupa menos espaço.'; return 'Se a pressão não mudar: quando a temperatura do gás aumenta, o volume aumenta. Quando a temperatura diminui, o volume diminui.'; }
         if (/\b(define.*pressao|o que e.*pressao|pressao)\b/.test(q)) { lastSimpleReply = 'Pressão é a força exercida numa área. Num gás, os corpúsculos batem nas paredes do recipiente.'; return 'A pressão é a intensidade da força exercida por unidade de área. Num gás, os corpúsculos batem nas superfícies do recipiente.\n\nEm palavras simples: a pressão está relacionada com a força com que o gás empurra as paredes.'; }
-        if (/\b(ola|obrigado|obrigada|bom dia|boa tarde|boa noite)\b/.test(q)) return 'De nada! Sou o FQBot e estou aqui para te ajudar a estudar a matéria de Ciências Físico-Químicas que aparece nos PDFs.';
+        if (/\b(ola|obrigado|obrigada|bom dia|boa tarde|boa noite)\b/.test(q)) return 'De nada! Sou o FQBot e estou aqui para te ajudar a estudar a matéria de Físico-Química que aparece nos PDFs.';
         if (/\b(ciencias|fisico|quimic|fisica|materia|corpuscul|particul|atom|molecul|ion|substancia|elemento|gas|pressao|temperatura|volume|solido|liquido|fotossintese|celula)\b/.test(q)) return 'Não encontro essa informação nos PDFs que tenho, por isso não vou adivinhar. Posso ajudar-te com corpúsculos, estados físicos, átomos, moléculas, iões, substâncias elementares e compostas, ou as relações entre temperatura, volume e pressão de um gás.';
         return 'Ainda não consigo conversar sobre todos os temas, mas posso fazer contas simples, contar uma piada ou história curta, propor uma adivinha e dar curiosidades simples. Se for uma pergunta de CFQ, respondo apenas quando a informação aparece nos PDFs da professora.';
       }
+      window.FQBotAddMessage = addMessage;
+      window.FQBotAnswer = answer;
     })();
   </script>
-</body>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-app.js"></script></body>
 </html>
+
+
+
+
 
 
 
