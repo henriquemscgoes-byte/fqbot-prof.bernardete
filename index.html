@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <title>FQBot — Estudo de Ciências Físico-Químicas</title>
+  <style>
+    :root{color-scheme:light;--ink:#18263d;--muted:#66748a;--blue:#2457d6;--line:#dce4f0;--pale:#f2f6ff;--green:#18865b;--red:#bd3c4d}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 12% 4%,#e7efff 0,transparent 42%),#f6f8fc}
+    button,input{font:inherit}button{cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}button:hover{transform:translateY(-2px)}button:active{transform:scale(.97)}
+    .screen{min-height:100vh;display:grid;place-items:center;padding:24px}.login{width:min(100%,440px);animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+    .brand{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:22px}.mark{width:48px;height:48px;border-radius:16px;background:var(--blue);color:white;display:grid;place-items:center;font-weight:800;font-size:20px;box-shadow:0 8px 20px #2457d633}.brand-name{font-size:22px;font-weight:800;letter-spacing:-.04em}
+    .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 18px 55px #20365b12}.card h1{margin:0 0 8px;font-size:26px;letter-spacing:-.04em}.intro{color:var(--muted);line-height:1.55;margin:0 0 26px}
+    label{display:block;font-weight:650;font-size:14px;margin:18px 0 8px}input{width:100%;height:49px;border:1px solid var(--line);border-radius:11px;padding:0 13px;color:var(--ink);background:#fff;transition:border-color .2s,box-shadow .2s,transform .2s}input:hover{border-color:#9eb3da;transform:translateY(-1px)}input:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 4px #2457d629;transform:translateY(-1px)}
+    .primary{width:100%;height:49px;border:0;border-radius:11px;margin-top:23px;background:var(--blue);color:#fff;font-weight:700;box-shadow:0 8px 18px #2457d629}.primary:hover{background:#1d49bb;box-shadow:0 11px 22px #2457d63d}.notice{min-height:20px;margin:12px 2px 0;color:var(--red);font-size:13px}.note{border-radius:12px;background:var(--pale);color:#445775;padding:13px 14px;font-size:13px;line-height:1.5;margin-top:12px}.foot{text-align:center;color:var(--muted);font-size:13px;margin:18px 0 0}
+    .app{display:none;min-height:100vh;grid-template-columns:280px 1fr;animation:fade .35s ease both}.sidebar{padding:25px 18px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:22px}.side-brand{display:flex;gap:10px;align-items:center;font-weight:800;font-size:19px}.side-brand .mark{width:40px;height:40px;border-radius:13px;font-size:16px}.welcome{background:#f1f5ff;border-radius:15px;padding:16px;line-height:1.45;font-size:14px}.welcome strong{display:block;margin-bottom:5px}.side-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:750;margin:0 0 9px}.quick{width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:4px 0;color:var(--ink)}.quick:hover{border-color:#9eb3da;background:#f8faff}.privacy{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.5}.logout{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;color:#4f5c70}
+    .main{min-width:0;display:flex;flex-direction:column;height:100vh}.topbar{height:72px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid var(--line);background:#ffffffba;backdrop-filter:blur(10px)}.top-title{font-weight:750}.user-pill{border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:13px;color:var(--muted)}
+    .conversation{flex:1;overflow:auto;padding:30px max(22px,calc((100% - 820px)/2));scroll-behavior:smooth}.intro-panel{max-width:760px;margin:8vh auto 30px;text-align:center;animation:rise .5s ease both}.intro-panel h1{font-size:clamp(28px,4vw,40px);letter-spacing:-.05em;margin:0 0 9px}.intro-panel p{color:var(--muted);line-height:1.6;margin:0 auto;max-width:560px}.messages{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}.message{max-width:min(88%,650px);padding:14px 17px;border-radius:17px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;animation:messageIn .28s ease both}.message.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-top-left-radius:5px;box-shadow:0 6px 18px #20365b0a}.message.user{align-self:flex-end;background:var(--blue);color:white;border-top-right-radius:5px}.message strong{font-weight:750}.composer-wrap{padding:15px 22px max(20px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#f6f8fc 20%)}.composer{max-width:760px;margin:auto;display:flex;align-items:end;gap:10px;padding:9px 10px 9px 15px;background:#fff;border:1px solid var(--line);border-radius:17px;box-shadow:0 10px 30px #20365b12;transition:border-color .2s,box-shadow .2s}.composer:focus-within{border-color:#9eb3da;box-shadow:0 0 0 4px #2457d61a,0 10px 30px #20365b12}.composer textarea{resize:none;max-height:140px;min-height:42px;flex:1;border:0;outline:0;padding:10px 0;color:var(--ink);background:transparent}.send{height:42px;min-width:76px;padding:0 14px;border:0;border-radius:11px;background:var(--blue);color:white;font-weight:700}.send:hover{background:#1d49bb}.composer-hint{max-width:760px;margin:8px auto 0;color:var(--muted);font-size:11px;padding-left:4px}
+    .typing{display:inline-flex;gap:4px;align-items:center}.typing i{width:6px;height:6px;border-radius:50%;background:#8090aa;animation:bop .8s infinite alternate}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+    @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes messageIn{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes bop{to{opacity:.35;transform:translateY(-4px)}}
+    @media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{height:100dvh}.topbar{height:62px;padding:0 16px}.conversation{padding:18px 14px}.intro-panel{margin:7vh auto 24px}.composer-wrap{padding-left:12px;padding-right:12px}.message{max-width:94%}}
+    @media(max-width:480px){.card{padding:26px 22px}.screen{padding:16px}.user-pill{padding:7px 10px}.send{min-width:60px;padding:0 10px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <section class="screen" id="loginScreen" aria-label="Iniciar sessão">
+    <main class="login">
+      <div class="brand"><div class="mark" aria-hidden="true">FQ</div><div class="brand-name">FQBot</div></div>
+      <section class="card" aria-labelledby="loginTitle">
+        <h1 id="loginTitle">Bem-vindo ao FQBot</h1>
+        <p class="intro">O teu assistente de estudo de Ciências Físico-Químicas, da professora Bernardete.</p>
+        <form id="loginForm">
+          <label for="username">Nome de utilizador</label><input id="username" name="username" type="text" autocomplete="username" placeholder="Escreve o nome de teste" required>
+          <label for="password">Palavra-passe</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="Escreve a palavra-passe de teste" required>
+          <button class="primary" type="submit">Entrar</button><div class="notice" id="loginNotice" role="alert" aria-live="polite"></div>
+        </form>
+        <div class="note"><strong>Acesso de demonstração:</strong> nome <code>aluno8</code> · palavra-passe <code>FQbot2026!</code>. Não uses estes dados para contas reais.</div>
+      </section>
+      <p class="foot">Ciências Físico-Químicas · 8.º ano · Professora Bernardete</p>
+    </main>
+  </section>
+
+  <section class="app" id="appScreen" aria-label="Chat FQBot">
+    <aside class="sidebar">
+      <div class="side-brand"><div class="mark" aria-hidden="true">FQ</div>FQBot</div>
+      <div class="welcome"><strong>Olá, <span id="displayName">aluno</span>!</strong>Vamos estudar ao teu ritmo. Podes pedir uma explicação, uma pista ou um exercício.</div>
+      <div><p class="side-title">Sugestões para começar</p>
+        <button class="quick" data-prompt="Explica-me a natureza corpuscular da matéria.">Natureza corpuscular</button>
+        <button class="quick" data-prompt="Compara os estados sólido, líquido e gasoso.">Estados físicos</button>
+        <button class="quick" data-prompt="Explica-me o que são átomos e moléculas.">Átomos e moléculas</button>
+        <button class="quick" data-prompt="Explica-me os iões e a diferença entre substâncias elementares e compostas.">Iões e substâncias</button>
+        <button class="quick" data-prompt="Faz-me uma pergunta de escolha múltipla sobre os gases.">Exercício de revisão</button>
+        <button class="quick" data-prompt="Dá-me uma pista sobre a relação entre temperatura e pressão.">Quero uma pista</button>
+        <button class="quick" data-prompt="Explica de forma mais simples.">Explica de forma mais simples</button>
+      </div>
+      <div class="privacy">O FQBot usa apenas os conteúdos dos PDFs da professora. Não partilhes dados pessoais no chat.</div>
+      <button class="logout" id="logoutButton">Terminar sessão</button>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="top-title">Assistente de estudo</div><div class="user-pill">8.º ano · CFQ</div></header>
+      <div class="conversation" id="conversation" aria-live="polite">
+        <div class="intro-panel" id="introPanel"><h1>O que vamos estudar?</h1><p>Pergunta sobre corpúsculos, estados físicos, átomos, moléculas, iões, substâncias e gases.</p></div>
+        <div class="messages" id="messages"></div>
+      </div>
+      <div class="composer-wrap">
+        <form class="composer" id="chatForm"><textarea id="chatInput" rows="1" aria-label="Escreve a tua pergunta" placeholder="Escreve uma pergunta sobre a matéria…" required></textarea><button class="send" type="submit">Enviar</button></form>
+        <div class="composer-hint">O FQBot responde apenas com base nos PDFs fornecidos pela professora.</div>
+      </div>
+    </main>
+  </section>
+  <script>
+    (() => {
+      const DEMO_USER = 'aluno8';
+      const DEMO_PASS = 'FQbot2026!';
+      const loginScreen = document.getElementById('loginScreen');
+      const appScreen = document.getElementById('appScreen');
+      const loginForm = document.getElementById('loginForm');
+      const notice = document.getElementById('loginNotice');
+      const nameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const messages = document.getElementById('messages');
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      let pendingQuiz = false;
+      let waitingForHint = false;
+      let lastSimpleReply = '';
+
+      loginForm.addEventListener('submit', event => {
+        event.preventDefault();
+        if (nameInput.value.trim().toLowerCase() !== DEMO_USER || passwordInput.value !== DEMO_PASS) {
+          notice.textContent = 'Os dados não correspondem ao acesso de demonstração. Confirma e tenta novamente.';
+          passwordInput.focus();
+          return;
+        }
+        notice.textContent = '';
+        document.getElementById('displayName').textContent = nameInput.value.trim();
+        loginScreen.style.display = 'none';
+        appScreen.style.display = 'grid';
+        chatInput.focus();
+        addMessage('bot', 'Olá! Sou o FQBot da professora Bernardete. Posso ajudar-te a estudar a matéria dos PDFs. Podes pedir uma explicação, uma pista ou um exercício.');
+      });
+
+      document.getElementById('logoutButton').addEventListener('click', () => {
+        appScreen.style.display = 'none'; loginScreen.style.display = 'grid';
+        messages.replaceChildren(); nameInput.value = ''; passwordInput.value = ''; nameInput.focus();
+        pendingQuiz = false; waitingForHint = false;
+      });
+
+      document.querySelectorAll('.quick').forEach(button => button.addEventListener('click', () => sendText(button.dataset.prompt)));
+      chatForm.addEventListener('submit', event => { event.preventDefault(); sendText(chatInput.value); });
+      chatInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); chatForm.requestSubmit(); }
+      });
+      chatInput.addEventListener('input', () => { chatInput.style.height = 'auto'; chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px'; });
+
+      function addMessage(role, text) {
+        document.getElementById('introPanel').style.display = 'none';
+        const bubble = document.createElement('div'); bubble.className = 'message ' + role; bubble.textContent = text;
+        messages.appendChild(bubble); document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight;
+      }
+      function sendText(text) {
+        const value = (text || '').trim(); if (!value) return;
+        addMessage('user', value); chatInput.value = ''; chatInput.style.height = 'auto';
+        const typing = document.createElement('div'); typing.className = 'message bot'; typing.innerHTML = '<span class="typing" aria-label="A preparar resposta"><i></i><i></i><i></i></span>';
+        messages.appendChild(typing); document.getElementById('conversation').scrollTop = document.getElementById('conversation').scrollHeight;
+        window.setTimeout(() => { const reply = answer(value); typing.remove(); addMessage('bot', reply); }, 420);
+      }
+      function answer(raw) {
+        const q = raw.toLocaleLowerCase('pt-PT').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (/\b(nome completo|morada|telefone|telemovel|email|palavra-passe|password)\b/.test(q)) return 'Por segurança, não partilhes palavras-passe nem dados pessoais na conversa. Eu não preciso desses dados para te ajudar a estudar.';
+        if (/\b(nao percebi|nao entendi|explica.*(simples|melhor)|mais simples|de outra forma)\b/.test(q)) return lastSimpleReply || 'Claro! Diz-me que parte te confundiu e explico-a com palavras mais simples. Também podes pedir uma pista.';
+        if (pendingQuiz) {
+          pendingQuiz = false;
+          if (/\b(b|verdadeiro|v|sim|certo)\b/.test(q)) return 'Certo! A temperatura constante, quando o volume de um gás diminui, a pressão aumenta.';
+          if (/\b(a|falso|f|nao)\b/.test(q)) return 'Ainda não. A resposta é verdadeiro: a temperatura constante, se o volume diminui, a pressão aumenta.';
+          return 'A resposta correta é verdadeiro: a temperatura constante, a diminuição do volume faz aumentar a pressão.';
+        }
+        if (waitingForHint) {
+          waitingForHint = false;
+          return 'Pista: pensa no que acontece à agitação dos corpúsculos quando a temperatura aumenta e em quantas vezes, e com que intensidade, colidem com as paredes do recipiente. A resposta completa é: a volume constante, a pressão aumenta quando a temperatura aumenta.';
+        }
+        if (/^(ola|ola!|bom dia|boa tarde|boa noite|obrigado|obrigada|quem es|quem es\?)\b/.test(q) || /\b(quem es|como te chamas)\b/.test(q)) return 'Olá! Sou o FQBot da professora Bernardete. Estou aqui sobretudo para te ajudar a estudar Ciências Físico-Químicas com a matéria dos PDFs.';
+        if (/\b(escolha multipla)\b/.test(q)) {
+          pendingQuiz = true;
+          return 'Escolhe uma opção: a temperatura constante, se o volume de um gás diminuir, a pressão…\nA) diminui\nB) aumenta\nC) não se altera\nResponde A, B ou C.';
+        }
+        if (/\b(verdadeiro ou falso|faz.*(exercicio|pergunta|quiz)|exercicio|quiz)\b/.test(q)) {
+          pendingQuiz = true;
+          return 'Verdadeiro ou falso: a temperatura constante, se o volume de um gás diminuir, a pressão aumenta. Qual é a tua resposta?';
+        }
+        if (/\b(pista|ajuda gradual|nao me digas|sem dizer)\b/.test(q)) {
+          waitingForHint = true;
+          if (/\b(pressao|temperatura|aquecer|volume)\b/.test(q)) return 'Pista: no PDF, observa como a temperatura altera a agitação dos corpúsculos e as colisões com as paredes. Queres tentar responder?';
+          if (/\b(solido|liquido|gas|gasoso|recipiente)\b/.test(q)) return 'Pista: compara a distância entre os corpúsculos e a liberdade dos seus movimentos nos três estados físicos. Queres tentar?';
+          return 'Pista: pensa nos corpúsculos, no seu movimento e nos espaços vazios entre eles. Queres uma pista mais específica?';
+        }
+        if (/\b(ion|ioes|iao|anio|anioes|catio|catioes|ganha.*eletr|perde.*eletr|carga.*positiv|carga.*negativ)\b/.test(q)) { lastSimpleReply = 'Um átomo que ganha eletrões fica com carga negativa. Se perde eletrões, fica com carga positiva. Um ião é um átomo ou grupo de átomos com carga.'; return 'Um ião forma-se quando um átomo ganha ou perde eletrões.\n• Se ganhar eletrões, fica com carga negativa: é um anião.\n• Se perder eletrões, fica com carga positiva: é um catião.\n\nEm palavras simples: ganhar eletrões dá carga negativa; perder eletrões dá carga positiva.'; }
+        if (/\b(substancia elementar|substancia simples|substancias elementares|substancia composta|substancias compostas|composto|elementar)\b/.test(q)) { lastSimpleReply = 'Elementar: tem átomos de um só elemento químico. Composta: tem átomos de elementos diferentes.'; return 'Uma substância elementar é formada por átomos de um único elemento químico. Uma substância composta é formada por átomos de elementos diferentes.\n\nEm poucas palavras: um tipo de elemento = elementar; mais do que um tipo = composta.'; }
+        if (/\b(molecul|formula quimica|formula.*(agua|dioxigenio|dioxido)|atomo.*ligad)\b/.test(q)) { lastSimpleReply = 'Uma molécula é um grupo de dois ou mais átomos ligados. A fórmula química mostra que elementos tem e quantos átomos de cada tipo.'; return 'Uma molécula é um grupo de dois ou mais átomos ligados. A fórmula química indica quais são os elementos e quantos átomos de cada elemento existem na molécula.'; }
+        if (/\b(atomo|atomos|eletrao|eletraos|protao|protaos|neutrao|neutroes|nucleo|simbolo quimico|elemento quimico)\b/.test(q)) { lastSimpleReply = 'Um átomo tem um núcleo com protões e neutrões. Os eletrões movem-se à volta do núcleo. Num átomo neutro, há o mesmo número de protões e eletrões.'; return 'Um átomo tem um núcleo, com protões e neutrões. Os eletrões movem-se à volta do núcleo.\n• Protão: carga positiva.\n• Eletrão: carga negativa.\n• Neutrão: sem carga elétrica.\nNum átomo neutro, o número de protões é igual ao de eletrões.'; }
+        if (/\b(sal|substancia ionica|sais|carga.*sal)\b/.test(q)) { lastSimpleReply = 'Um sal é feito de iões positivos e negativos. As cargas equilibram-se, por isso o sal é neutro.'; return 'Um sal é uma substância iónica formada por iões positivos e negativos. Num sal, a soma das cargas positivas é igual à soma das cargas negativas; por isso, o sal é neutro.'; }
+        if (/\b(corpuscul|particul|materia divisivel|espacos vazios)\b/.test(q)) { lastSimpleReply = 'A matéria é feita de corpúsculos muito pequenos. Eles estão sempre a mexer-se e há espaços entre eles.'; return 'A matéria é feita de corpúsculos muito pequenos. Eles estão sempre em movimento e há espaços vazios entre eles.\n\nEm palavras simples: tudo o que é matéria é feito de corpúsculos minúsculos, que estão sempre a mexer-se.'; }
+        if (/\b(solido|liquido|gasoso|estados fisicos|estado fisico)\b/.test(q)) { lastSimpleReply = 'Sólido: mantém a forma e o volume. Líquido: mantém o volume, mas muda de forma para caber no recipiente. Gás: espalha-se e ocupa o espaço disponível.'; return 'Pensa assim:\n• Sólido: tem forma e volume próprios.\n• Líquido: mantém o volume, mas muda de forma conforme o recipiente.\n• Gás: ocupa o espaço disponível e pode ser comprimido.'; }
+        if (/\b(compress|ocupa.*volume|forma.*recipiente)\b/.test(q)) { lastSimpleReply = 'O gás pode ser apertado e ocupa o espaço que houver. O líquido muda de forma, mas mantém o volume. O sólido mantém a forma e o volume.'; return 'Um gás pode ser comprimido e ocupa o espaço disponível. Um líquido muda de forma para caber no recipiente, mas mantém o volume. Um sólido mantém a sua forma e o seu volume.'; }
+        if (/\b(pressao.*temperatura|temperatura.*pressao|aquecer.*gas|volume constante)\b/.test(q)) { lastSimpleReply = 'Sem mudar o volume: gás mais quente significa pressão maior; gás mais frio significa pressão menor.'; return 'Se o volume não mudar: quando a temperatura do gás sobe, a pressão sobe. Quando a temperatura desce, a pressão desce.\n\nPorquê? Os corpúsculos ficam mais agitados quando aquecem e batem mais vezes e com mais força nas paredes.'; }
+        if (/\b(pressao.*volume|volume.*pressao|comprimir|temperatura constante)\b/.test(q)) { lastSimpleReply = 'Sem mudar a temperatura: menos espaço para o gás dá mais pressão; mais espaço dá menos pressão.'; return 'Se a temperatura não mudar: quando o volume do gás diminui, a pressão aumenta. Quando o volume aumenta, a pressão diminui.\n\nEm poucas palavras: menos espaço para o gás significa maior pressão.'; }
+        if (/\b(temperatura.*volume|volume.*temperatura|pressao constante)\b/.test(q)) { lastSimpleReply = 'Sem mudar a pressão: se o gás aquece, ocupa mais espaço; se arrefece, ocupa menos espaço.'; return 'Se a pressão não mudar: quando a temperatura do gás aumenta, o volume aumenta. Quando a temperatura diminui, o volume diminui.'; }
+        if (/\b(define.*pressao|o que e.*pressao|pressao)\b/.test(q)) { lastSimpleReply = 'Pressão é a força exercida numa área. Num gás, os corpúsculos batem nas paredes do recipiente.'; return 'A pressão é a intensidade da força exercida por unidade de área. Num gás, os corpúsculos batem nas superfícies do recipiente.\n\nEm palavras simples: a pressão está relacionada com a força com que o gás empurra as paredes.'; }
+        if (/\b(ola|obrigado|obrigada|bom dia|boa tarde|boa noite)\b/.test(q)) return 'De nada! Sou o FQBot e estou aqui para te ajudar a estudar a matéria de Ciências Físico-Químicas que aparece nos PDFs.';
+        return 'Não encontro essa informação nos PDFs que tenho, por isso não vou adivinhar. Posso ajudar-te com corpúsculos, estados físicos, átomos, moléculas, iões, substâncias elementares e compostas, ou as relações entre temperatura, volume e pressão de um gás.';
+      }
+    })();
+  </script>
+</body>
+</html>
